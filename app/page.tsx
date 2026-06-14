@@ -50,10 +50,13 @@ export default function Home() {
     try {
       const nowMs = Date.now();
       const { lateMinutes, fine } = calcFine(nowMs, hh, mm);
+      const now = new Date(nowMs);
+      const dateStr = now.toLocaleDateString("ko-KR");
+      const timeStr = now.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
       const res = await fetch("/api/checkin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, timestamp: nowMs, lateMinutes, fine }),
+        body: JSON.stringify({ name, dateStr, timeStr, lateMinutes, fine }),
       });
       const data = await res.json();
       if (res.ok) {
